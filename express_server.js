@@ -22,6 +22,11 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+app.get("/urls/:shortURL", (req, res) => {
+  req.params.shortURL = "b2xVn2";
+  res.send("Test 123");
+});
+
 app.listen(PORT, ()=> {
   console.log(`Example app listening on port ${PORT}`);
 });
