@@ -23,7 +23,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  req.params.shortURL = "b2xVn2";
+  req.params.shortURL = urlDatabase[0];
   res.send("Test 123");
 });
 
