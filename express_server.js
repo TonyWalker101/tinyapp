@@ -1,5 +1,11 @@
+// Requiring and calling Express package
 const express = require("express");
 const app = express();
+
+// Requiring and calling Body Parser Package
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
 const PORT = 8080;
 
 app.set("view engine", "ejs");
