@@ -30,8 +30,8 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send(`${res.statusCode} Ok`);
+  urlDatabase[generateRandomString()] = req.body["longURL"];
+  res.send(`Ok`);
 });
 
 app.get("/hello", (req, res) => {
