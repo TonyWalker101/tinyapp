@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const PORT = 8080;
 
+// Setting template engine to EJS
 app.set("view engine", "ejs");
 
 const urlDatabase = {
@@ -28,6 +29,11 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+app.post("/urls", (req, res) => {
+  console.log(req.body);
+  res.send("Ok");
+});
+
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
@@ -41,3 +47,8 @@ app.get("/urls/:shortURL", (req, res) => {
 app.listen(PORT, ()=> {
   console.log(`Example app listening on port ${PORT}`);
 });
+
+const generateRandomString = () => {
+  return Math.random().toString(20).substring(2,8);
+};
+
