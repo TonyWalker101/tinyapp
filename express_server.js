@@ -31,7 +31,7 @@ app.get("/urls/new", (req, res) => {
 
 app.post("/urls", (req, res) => {
   console.log(req.body);
-  res.send("Ok");
+  res.send(`${res.statusCode} Ok`);
 });
 
 app.get("/hello", (req, res) => {
