@@ -24,7 +24,8 @@ app.get("/hello", (req, res) => {
 
 app.get("/urls/:shortURL", (req, res) => {
   req.params.shortURL = "b2xVn2";
-  res.send(`Test 123`);
+  const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
+  res.render("urls_show", templateVars);
 });
 
 app.listen(PORT, ()=> {
