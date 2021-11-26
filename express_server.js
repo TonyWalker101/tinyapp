@@ -30,14 +30,14 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  urlDatabase[generateRandomString()] = req.body["longURL"];
-  req.params.shortURL = shortURL;
-  res.redirect(`/urls/:shortURL`);
+  const shortURL = generateRandomString();
+  urlDatabase[shortURL] = req.body["longURL"];
+  res.redirect(`/urls/${shortURL}`);
 });
 
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
+// app.get("/hello", (req, res) => {
+//   res.send("<html><body>Hello <b>World</b></body></html>\n");
+// });
 
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
