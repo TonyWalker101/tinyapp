@@ -22,24 +22,30 @@ app.get("/", (req, res) => {
 });
 
 // URLs page
-app.get("/urls.json", (req, res) => {
+app.get("/urls", (req, res) => {
   const templateVars = {urls: urlDatabase};
   res.render("urls_index", templateVars);
 });
 
-// Pre-POST page
+// New Tiny URL generation page
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// Post-POST page
+// POST page
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body["longURL"];
   res.redirect(`/urls/${shortURL}`);
 });
 
-// Post-POST Page Redirection
+// Deleting(POST) page
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL]
+  res.redirect("/urls");
+});
+
+// POST Page Redirection
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
   req.params.shortURL = templateVars.shortURL;
