@@ -16,36 +16,36 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
-// Main page
+// / page
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
-// URLs page
+// /urls page
 app.get("/urls", (req, res) => {
   const templateVars = {urls: urlDatabase};
   res.render("urls_index", templateVars);
 });
 
-// New Tiny URL generation page
+// /urls/new page
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// POST page
+// Tiny URL Creating 
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body["longURL"];
   res.redirect(`/urls/${shortURL}`);
 });
 
-// Deleting page
+// Deleting URL
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL]
   res.redirect("/urls");
 });
 
-// Updating page
+// Updating URL
 app.post("/urls/:shortURL/update", (req, res) => {
   delete urlDatabase[req.params.shortURL]
   const shortURL = generateRandomString();
@@ -53,14 +53,14 @@ app.post("/urls/:shortURL/update", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
-// POST Page Redirection
+// /urls/TinyURL page
 app.get("/urls/:shortURL", (req, res) => {
   const templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
   req.params.shortURL = templateVars.shortURL;
   res.render("urls_show", templateVars);
 });
 
-// Tiny URL auto-redirect
+// Tiny URL auto-redirect to Long URL
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
