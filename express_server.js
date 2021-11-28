@@ -38,12 +38,6 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
-// /login page
-app.get("/login", (req, res) => {
-  const templateVars = { username: userDatabase};
-  res.render("login", templateVars);
-});
-
 // Tiny URL Creating 
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
@@ -57,10 +51,9 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-// Username Creating 
-app.post("/login/update", (req, res) => {
-  res.cookie("username") = req.body["username"];
-  console.log("Cookies:", res.cookie("username"));
+// Login Creating 
+app.post("/login", (req, res) => {
+  res.cookie("username", req.body["username"]);
   res.redirect(`/urls`);
 });
 
