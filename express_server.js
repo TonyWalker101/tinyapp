@@ -6,6 +6,10 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+//Requiring Cookie Parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 const PORT = 8080;
 
 // Setting template engine to EJS
@@ -15,6 +19,8 @@ const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+const userDatabase = {};
 
 // / page
 app.get("/", (req, res) => {
@@ -32,6 +38,12 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+// /login page
+app.get("/login", (req, res) => {
+  const templateVars = { username: userDatabase};
+  res.render("login", templateVars);
+});
+
 // Tiny URL Creating 
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
@@ -43,6 +55,13 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   delete urlDatabase[req.params.shortURL]
   res.redirect("/urls");
+});
+
+// Username Creating 
+app.post("/login/update", (req, res) => {
+  res.cookie("username") = req.body["username"];
+  console.log("Cookies:", res.cookie("username"));
+  res.redirect(`/urls`);
 });
 
 // Updating URL
