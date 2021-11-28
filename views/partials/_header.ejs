@@ -13,19 +13,19 @@
       <div> 
         <% if(!username || username === "undefined") { %>
           <form class="form-inline" action="/login" method="POST">
-            <div class="form-group mb-2">
               <label for="username"></label>
               <input class="form-control" type="text" name="username" placeholder="Username" style="width: 200px; margin: 1em">
               <button type="submit" class="btn btn-primary">Sign-In</button>
-          </div>
           </form>  
         <% } else {%>
           <form class="form-inline" action="/logout" method="POST">
-            <div class="form-group mb-2">
-              <h6>Logged in as: <%= username %></h6>
+              <nav class="navbar">
+                <span class="navbar-text-dark">
+                Logged in as: <%= username %>
+                </span>
+              </nav>
               <label for="username"></label>
-              <button type="submit" class="btn btn-primary">Logout</button> 
-            </div>
+              <button type="submit" class="btn btn-outline-dark">Logout</button> 
           </form>
           <% } %>
       </div>
