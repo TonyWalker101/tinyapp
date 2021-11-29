@@ -42,6 +42,14 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+// /register page
+app.get("/register", (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"]
+  };
+  res.render("user_registration", templateVars);
+});
+
 // Tiny URL Creating 
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
