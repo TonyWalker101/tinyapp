@@ -30,16 +30,11 @@ const generateRandomString = () => {
 
 const userDatabase = {};
 
-const newUser = {
-  id: null,
-  email: null,
-  password: null
-};
+// const newUser = {};
 
 getUser = (object, cookie) => {
   return object[cookie];
 };
-
 
 // Home page
 app.get("/", (req, res) => {
