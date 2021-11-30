@@ -20,6 +20,23 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const generateRandomString = () => {
+  return Math.random().toString(20).substring(2,8);
+};
+
+// const randomID = generateRandomString();
+
+// User registration logic
+
+const userDatabase = {};
+
+const newUser = {};
+
+generateUser = (database, user) => {
+  return database[randomID] = user;
+};
+
+
 // Home page
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -45,9 +62,24 @@ app.get("/urls/new", (req, res) => {
 // /register page
 app.get("/register", (req, res) => {
   const templateVars = {
-    username: req.cookies["username"]
+    username: req.cookies["username"],
+    user: newUser,
+    database: userDatabase,
   };
   res.render("user_registration", templateVars);
+});
+
+// Registering New User
+app.post("/register", (req, res) => {
+  randomID = generateRandomString();
+
+  newUser["id"] = randomID
+  newUser['email'] = req.body["email"];
+  newUser['password'] = req.body["password"];
+  userDatabase[randomID] = newUser;
+  
+  console.log(userDatabase);
+  res.redirect(`/urls`);
 });
 
 // Tiny URL Creating 
@@ -56,6 +88,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = req.body["longURL"];
   res.redirect(`/urls/${shortURL}`);
 });
+
 
 // Deleting URL
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -104,6 +137,3 @@ app.listen(PORT, ()=> {
   console.log(`Example app listening on port ${PORT}`);
 });
 
-const generateRandomString = () => {
-  return Math.random().toString(20).substring(2,8);
-};
