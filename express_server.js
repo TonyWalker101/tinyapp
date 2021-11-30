@@ -30,10 +30,14 @@ const generateRandomString = () => {
 
 const userDatabase = {};
 
-const newUser = {};
+const newUser = {
+  id: null,
+  email: null,
+  password: null
+};
 
-generateUser = (database, user) => {
-  return database[randomID] = user;
+getUser = (object, cookie) => {
+  return object[cookie];
 };
 
 
@@ -44,17 +48,22 @@ app.get("/", (req, res) => {
 
 // /urls page
 app.get("/urls", (req, res) => {
+  const user = getUser(userDatabase, req.cookies["user_id"]);
+
   const templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"]
+    user: user
   };
+
   res.render("urls_index", templateVars);
 });
 
 // /urls/new page
 app.get("/urls/new", (req, res) => {
+  const user = getUser(userDatabase, req.cookies["user_id"]);
+  
   const templateVars = {
-    username: req.cookies["username"]
+    user: user
   };
   res.render("urls_new", templateVars);
 });
@@ -62,9 +71,9 @@ app.get("/urls/new", (req, res) => {
 // /register page
 app.get("/register", (req, res) => {
   const templateVars = {
-    username: req.cookies["username"],
-    user: newUser,
-    database: userDatabase,
+    // username: req.cookies["username"],
+    user: null
+    // database: userDatabase,
   };
   res.render("user_registration", templateVars);
 });
@@ -72,15 +81,16 @@ app.get("/register", (req, res) => {
 // Registering New User
 app.post("/register", (req, res) => {
   randomID = generateRandomString();
-
-  newUser["id"] = randomID
-  newUser['email'] = req.body["email"];
-  newUser['password'] = req.body["password"];
-  userDatabase[randomID] = newUser;
-  
-  console.log(userDatabase);
+  const newUser1 = {};
+  newUser1["id"] = randomID
+  newUser1["email"] = req.body["email"];
+  newUser1["password"] = req.body["password"];
+  userDatabase[randomID] = newUser1;
+  res.cookie("user_id", newUser1["id"]);
+  console.log(userDatabase); //test 
   res.redirect(`/urls`);
 });
+
 
 // Tiny URL Creating 
 app.post("/urls", (req, res) => {
@@ -98,13 +108,13 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 // Login Creating 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body["username"]);
+  res.cookie("user_id", req.body["username"]);
   res.redirect(`/urls`);
 });
 
 // Logging Out 
 app.post("/logout", (req, res) => {
-  delete res.cookie("username", req.body["username"]);
+  delete res.cookie("user_id", req.body["username"]);
   res.redirect(`/urls`);
 });
 
@@ -118,10 +128,12 @@ app.post("/urls/:shortURL/update", (req, res) => {
 
 // /urls/TinyURL page
 app.get("/urls/:shortURL", (req, res) => {
+  const user = getUser(userDatabase, req.cookies["user_id"]);
+
   const templateVars = { 
     shortURL: req.params.shortURL, 
     longURL: urlDatabase[req.params.shortURL],
-    username: req.cookies["username"]
+    user: user
   };
   req.params.shortURL = templateVars.shortURL;
   res.render("urls_show", templateVars);
