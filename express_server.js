@@ -24,14 +24,30 @@ const generateRandomString = () => {
   return Math.random().toString(20).substring(2,8);
 };
 
-// const randomID = generateRandomString();
-
 // User registration logic
 
-const userDatabase = {};
+const userDatabase = {
+  "abc": {
+    id: "abc",
+    email: "test@email.com",
+    password: "123"
+  }
+};
 
-// const newUser = {};
+// Helper functins checks if user exists already in userDatabase
+const userExistsInDatabase =  (email) => {
+  for (let obj in userDatabase) {
+    let user = userDatabase[obj];
 
+    if (user.email === email) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+// Helper function that gets a user from the database
 getUser = (object, cookie) => {
   return object[cookie];
 };
@@ -65,9 +81,12 @@ app.get("/urls/new", (req, res) => {
 
 // /register page
 app.get("/register", (req, res) => {
+
+  const user = getUser(userDatabase, req.cookies["user_id"]);
+  
   const templateVars = {
     // username: req.cookies["username"],
-    user: null
+    user: user
     // database: userDatabase,
   };
   res.render("user_registration", templateVars);
@@ -75,14 +94,31 @@ app.get("/register", (req, res) => {
 
 // Registering New User
 app.post("/register", (req, res) => {
+  // const user = getUser(userDatabase, req.cookies["user_id"]);
+  const email = req.body.email;
+  const password = req.body.password;
+
   randomID = generateRandomString();
   const newUser1 = {};
+  
+  if (email === "" || password === "") {
+    res.status(400);
+    res.send("Email and/or password is invalid");
+  };
+  
+  if (userExistsInDatabase(email)) {
+    res.status(400);
+    res.send("Email already registered!");
+  }
+
   newUser1["id"] = randomID
   newUser1["email"] = req.body["email"];
   newUser1["password"] = req.body["password"];
-  userDatabase[randomID] = newUser1;
+
   res.cookie("user_id", newUser1["id"]);
-  console.log(userDatabase); //test 
+
+  userDatabase[randomID] = newUser1;
+  
   res.redirect(`/urls`);
 });
 
@@ -109,7 +145,7 @@ app.post("/login", (req, res) => {
 
 // Logging Out 
 app.post("/logout", (req, res) => {
-  delete res.cookie("user_id", req.body["username"]);
+  res.clearCookie("user_id", req.body["username"]);
   res.redirect(`/urls`);
 });
 
@@ -143,4 +179,3 @@ app.get("/u/:shortURL", (req, res) => {
 app.listen(PORT, ()=> {
   console.log(`Example app listening on port ${PORT}`);
 });
-
