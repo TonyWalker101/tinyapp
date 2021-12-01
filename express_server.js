@@ -112,10 +112,10 @@ app.post("/register", (req, res) => {
   randomID = generateRandomString();
   const newUser1 = {};
   
-  if (email === "" || password === "") {
-    res.status(400);
-    res.send("Email and/or password is invalid");
-  };
+  // if (email === "" || password === "") {
+  //   // res.status(400);
+  //   return res.status(400).send("Email and/or password is invalid");
+  // };
   
   if (userExistsInDatabase(email)) {
     res.status(400);
