@@ -34,18 +34,32 @@ const userDatabase = {
   }
 };
 
-// Helper functins checks if user exists already in userDatabase
+// Helper function checks if user exists already in userDatabase
 const userExistsInDatabase =  (email) => {
   for (let obj in userDatabase) {
     let user = userDatabase[obj];
 
     if (user.email === email) {
-      return true;
+      return user;
     }
   }
 
   return false;
 };
+
+// Helper function checks if user's password matches
+const userPasswordMatches =  (user, password) => {
+  // for (let obj in userDatabase) {
+  //   // let user = userDatabase[obj];
+
+  if (user.password === password) {
+    return true;
+  };
+  
+  return false;
+};
+
+
 
 // Helper function that gets a user from the database
 getUser = (object, cookie) => {
@@ -99,6 +113,7 @@ app.get("/login", (req, res) => {
   const templateVars = {
     user: user
   };
+
   res.render("login", templateVars);
 });
 
@@ -112,14 +127,14 @@ app.post("/register", (req, res) => {
   randomID = generateRandomString();
   const newUser1 = {};
   
-  // if (email === "" || password === "") {
-  //   // res.status(400);
-  //   return res.status(400).send("Email and/or password is invalid");
-  // };
+  if (email === "" || password === "") {
+    // res.status(400);
+    return res.status(400).send("Email and/or password is invalid");
+  };
   
   if (userExistsInDatabase(email)) {
-    res.status(400);
-    res.send("Email already registered!");
+    // res.status(400);
+    return res.status(400).send("Email already registered!");
   }
 
   newUser1["id"] = randomID
@@ -150,8 +165,21 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
 // Login Creating 
 app.post("/login", (req, res) => {
-  res.cookie("user_id", req.body["username"]);
-  res.redirect(`/urls`);
+  const email = req.body.email;
+  const password = req.body.password;
+
+  if (userExistsInDatabase(email)) {
+
+    const user = userExistsInDatabase(email);
+
+    if (userPasswordMatches(user, password)) {
+      res.cookie("user_id", user.id);
+      return res.redirect("/urls");
+    }
+
+  }
+
+  return res.status(401).send("Email and/or password does not match our records");
 });
 
 // Logging Out 
