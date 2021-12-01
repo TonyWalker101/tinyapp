@@ -92,6 +92,17 @@ app.get("/register", (req, res) => {
   res.render("user_registration", templateVars);
 });
 
+// /login page
+app.get("/login", (req, res) => {
+  const user = getUser(userDatabase, req.cookies["user_id"]);
+  
+  const templateVars = {
+    user: user
+  };
+  res.render("login", templateVars);
+});
+
+
 // Registering New User
 app.post("/register", (req, res) => {
   // const user = getUser(userDatabase, req.cookies["user_id"]);
