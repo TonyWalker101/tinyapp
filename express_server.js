@@ -198,8 +198,15 @@ app.post("/urls", (req, res) => {
 
 // Deleting URL
 app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL]
-  res.redirect("/urls");
+  const cookie = req.cookies.user_id;
+  const shortURL = req.params.shortURL;
+  
+  if (cookie && urlDatabase[shortURL].userID === cookie) {
+    delete urlDatabase[shortURL];
+    return res.redirect("/urls"); 
+  }
+
+  return res.redirect("/usernotfound");
 });
 
 // Logging into our app 
@@ -233,40 +240,40 @@ app.post("/logout", (req, res) => {
 app.post("/urls/:shortURL/update", (req, res) => {
   
   const cookie = req.cookies.user_id;
+  const shortURL = req.params.shortURL;
 
-  delete urlDatabase[req.params.shortURL]
-
-  const shortURL = generateRandomString();
-  urlDatabase[shortURL] = {longURL: req.body["longURL"], userID: cookie};
-
-  res.redirect(`/urls/${shortURL}`);
+  if (cookie && urlDatabase[shortURL].userID === cookie) {
+    delete urlDatabase[req.params.shortURL]
+  
+    const shortURL = generateRandomString();
+    urlDatabase[shortURL] = {longURL: req.body["longURL"], userID: cookie};
+  
+    return res.redirect(`/urls/${shortURL}`);
+  }
+  
+  return res.redirect("/usernotfound");
 
 });
 
 // /urls/TinyURL page
 app.get("/urls/:shortURL", (req, res) => {
   const cookie = req.cookies.user_id;
+  const shortURL = req.params.shortURL
 
-  if (cookie) {
-
-    const shortURL = req.params.shortURL
-
-    if (urlDatabase[shortURL].userID === cookie) {
-      
-      const user = getUser(userDatabase, cookie);
+  if (cookie && urlDatabase[shortURL].userID === cookie) {
     
-      const templateVars = { 
-        shortURL: shortURL, 
-        longURL: urlsForUser(cookie)[shortURL],
-        user: user
-      };
-    
-      req.params.shortURL = templateVars.shortURL;
-      return res.render("urls_show", templateVars);
-    }
-    
+    const user = getUser(userDatabase, cookie);
+  
+    const templateVars = { 
+      shortURL: shortURL, 
+      longURL: urlsForUser(cookie)[shortURL],
+      user: user
+    };
+  
+    req.params.shortURL = templateVars.shortURL;
+    return res.render("urls_show", templateVars);
   }
-
+  
   return res.redirect("/usernotfound");
 });
 
