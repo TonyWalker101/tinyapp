@@ -34,7 +34,7 @@ const userDatabase = {
 };
 
 // Helper function checks if user exists already in userDatabase
-const userExistsInDatabase =  (email) => {
+const userExistsInDatabase = email => {
   for (let obj in userDatabase) {
     let user = userDatabase[obj];
 
@@ -46,8 +46,8 @@ const userExistsInDatabase =  (email) => {
   return false;
 };
 
-// Helper function checks if a user's password matches our user database
-const userPasswordMatches =  (user, password) => {
+// Helper function checks if a user's password matches our database
+const userPasswordMatches = (user, password) => {
 
   if (user.password === password) {
     return true;
@@ -56,7 +56,7 @@ const userPasswordMatches =  (user, password) => {
   return false;
 };
 
-// Helper function that gets a user from the database
+// Helper function that gets a specific user from a database
 getUser = (object, cookie) => {
   return object[cookie];
 };
@@ -80,12 +80,19 @@ app.get("/urls", (req, res) => {
 
 // /urls/new page
 app.get("/urls/new", (req, res) => {
-  const user = getUser(userDatabase, req.cookies["user_id"]);
-  
-  const templateVars = {
-    user: user
-  };
-  res.render("urls_new", templateVars);
+
+  if (req.cookies["user_id"]) {
+    
+    const user = getUser(userDatabase, req.cookies["user_id"]);
+    
+    const templateVars = {
+      user: user
+    };
+
+    return res.render("urls_new", templateVars);
+  }
+
+  return res.redirect("/login");
 });
 
 // /register page
@@ -96,6 +103,7 @@ app.get("/register", (req, res) => {
   const templateVars = {
     user: user
   };
+  
   res.render("user_registration", templateVars);
 });
 
