@@ -20,11 +20,10 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// Helper function generates a random string for user IDs
 const generateRandomString = () => {
   return Math.random().toString(20).substring(2,8);
 };
-
-// User registration logic
 
 const userDatabase = {
   "abc": {
@@ -47,10 +46,8 @@ const userExistsInDatabase =  (email) => {
   return false;
 };
 
-// Helper function checks if user's password matches
+// Helper function checks if a user's password matches our user database
 const userPasswordMatches =  (user, password) => {
-  // for (let obj in userDatabase) {
-  //   // let user = userDatabase[obj];
 
   if (user.password === password) {
     return true;
@@ -58,8 +55,6 @@ const userPasswordMatches =  (user, password) => {
   
   return false;
 };
-
-
 
 // Helper function that gets a user from the database
 getUser = (object, cookie) => {
@@ -99,9 +94,7 @@ app.get("/register", (req, res) => {
   const user = getUser(userDatabase, req.cookies["user_id"]);
   
   const templateVars = {
-    // username: req.cookies["username"],
     user: user
-    // database: userDatabase,
   };
   res.render("user_registration", templateVars);
 });
@@ -120,7 +113,6 @@ app.get("/login", (req, res) => {
 
 // Registering New User
 app.post("/register", (req, res) => {
-  // const user = getUser(userDatabase, req.cookies["user_id"]);
   const email = req.body.email;
   const password = req.body.password;
 
@@ -128,19 +120,16 @@ app.post("/register", (req, res) => {
   const newUser1 = {};
   
   if (email === "" || password === "") {
-    // res.status(400);
     return res.status(400).send("Email and/or password is invalid");
   };
   
   if (userExistsInDatabase(email)) {
-    // res.status(400);
     return res.status(400).send("Email already registered!");
   }
 
   newUser1["id"] = randomID
   newUser1["email"] = req.body["email"];
   newUser1["password"] = req.body["password"];
-
   res.cookie("user_id", newUser1["id"]);
 
   userDatabase[randomID] = newUser1;
@@ -163,8 +152,9 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-// Login Creating 
+// Logging into our app 
 app.post("/login", (req, res) => {
+
   const email = req.body.email;
   const password = req.body.password;
 
@@ -176,24 +166,27 @@ app.post("/login", (req, res) => {
       res.cookie("user_id", user.id);
       return res.redirect("/urls");
     }
-
   }
 
-  return res.status(401).send("Email and/or password does not match our records");
+  return res.status(403).send("Email and password combination does not match our records!");
 });
 
 // Logging Out 
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id", req.body["username"]);
-  res.redirect(`/urls`);
+
+  res.clearCookie("user_id");
+  res.redirect(`/login`);
+
 });
 
 // Updating URL
 app.post("/urls/:shortURL/update", (req, res) => {
+
   delete urlDatabase[req.params.shortURL]
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body["longURL"];
   res.redirect(`/urls/${shortURL}`);
+
 });
 
 // /urls/TinyURL page
