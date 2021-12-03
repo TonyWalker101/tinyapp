@@ -27,12 +27,9 @@ const urlDatabase = {
 
 //  Helper Functions
 
-const { getUserByEmail } = require("./helper");
+const { getUserByEmail, generateRandomString } = require("./helper");
 
-// Helper function generates a random string for user IDs
-const generateRandomString = () => {
-  return Math.random().toString(20).substring(2,8);
-};
+
 
 const userDatabase = {
   "abc": {
