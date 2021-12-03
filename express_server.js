@@ -38,7 +38,7 @@ const userDatabase = {
 };
 
 // Helper function checks if user exists already in userDatabase
-const userExistsInDatabase = email => {
+const getUserByEmail = (email, userDatabase) => {
 
   for (let obj in userDatabase) {
     let user = userDatabase[obj];
@@ -174,7 +174,7 @@ app.post("/register", (req, res) => {
   randomID = generateRandomString();
   const newUser1 = {};
   
-  if (userExistsInDatabase(email)) {
+  if (getUserByEmail(email, userDatabase)) {
     return res.status(400).send("Email already registered!");
   }
 
@@ -219,9 +219,9 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (userExistsInDatabase(email)) {
+  if (getUserByEmail(email, userDatabase)) {
 
-    const user = userExistsInDatabase(email);
+    const user = getUserByEmail(email, userDatabase);
 
     if (userPasswordMatches(user, password)) {
       req.session.user_id = user.id;
