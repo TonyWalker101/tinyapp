@@ -27,9 +27,7 @@ const urlDatabase = {
 
 //  Helper Functions
 
-const { getUserByEmail, generateRandomString } = require("./helper");
-
-
+const { getUserByEmail, generateRandomString, userPasswordMatches } = require("./helper");
 
 const userDatabase = {
   "abc": {
@@ -39,15 +37,7 @@ const userDatabase = {
   }
 };
 
-// Helper function checks if a user's password matches our database
-const userPasswordMatches = (user, password) => {
 
-  if (bcrypt.compareSync(password, user.password)) {
-    return true;
-  };
-  
-  return false;
-};
 
 // Helper function that gets a specific user from a database
 getUser = (object, cookie) => {
