@@ -20,32 +20,31 @@ app.use(cookieSession({
 // Setting template engine to EJS
 app.set("view engine", "ejs");
 
-const urlDatabase = {
-  "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "abc"},
-  "9sm5xK": {longURL: "http://www.google.com", userID: "abc"}
-};
-
 //  Helper Functions
 
 const { 
   getUserByEmail, 
   generateRandomString, 
   userPasswordMatches,
-  urlsForUser
+  urlsForUser,
+  getUser
 } = require("./helper");
+
+// DBs
+
+const urlDatabase = {
+  "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "abc"},
+  "9sm5xK": {longURL: "http://www.google.com", userID: "abc"}
+};
 
 const userDatabase = {
   "abc": {
     id: "abc",
     email: "test@email.com",
     password: bcrypt.hashSync("123",10)
-  }};
-
-
-// Helper function that gets a specific user from a database
-getUser = (object, cookie) => {
-  return object[cookie];
+  }
 };
+
 
 // Home page
 app.get("/", (req, res) => {
