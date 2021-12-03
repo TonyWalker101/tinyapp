@@ -30,7 +30,8 @@ const urlDatabase = {
 const { 
   getUserByEmail, 
   generateRandomString, 
-  userPasswordMatches
+  userPasswordMatches,
+  urlsForUser
 } = require("./helper");
 
 const userDatabase = {
@@ -44,24 +45,6 @@ const userDatabase = {
 // Helper function that gets a specific user from a database
 getUser = (object, cookie) => {
   return object[cookie];
-};
-
-// Helper function retrieves user's specific urls from database
-const urlsForUser = (userID, urlDatabase) => {
-
-  const userUrl = {};
-
-  for (let obj in urlDatabase) {
-
-    let urlList = urlDatabase[obj];
-
-    if (urlList.userID === userID) {
-     userUrl[obj] = urlList.longURL;
-    }
-  
-  }
-
-  return userUrl;
 };
 
 // Home page
