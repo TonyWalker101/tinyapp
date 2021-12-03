@@ -27,9 +27,28 @@ const userPasswordMatches = (user, password) => {
   
 };
 
+// Function retrieves user's specific urls from database
+const urlsForUser = (userID, urlDatabase) => {
+
+  const userUrl = {};
+
+  for (let obj in urlDatabase) {
+
+    let urlList = urlDatabase[obj];
+
+    if (urlList.userID === userID) {
+     userUrl[obj] = urlList.longURL;
+    }
+  
+  }
+
+  return userUrl;
+};
+
 
 module.exports = { 
   getUserByEmail, 
   generateRandomString,
-  userPasswordMatches
+  userPasswordMatches,
+  urlsForUser
 };
