@@ -1,4 +1,5 @@
 // Helper functions
+const bcrypt = require("bcrypt");
 
 // Function generates a random string for use with user IDs
 const generateRandomString = () => {
@@ -17,9 +18,18 @@ const getUserByEmail = (email, userDatabase) => {
   }
 };
 
+// Function checks if a user's password matches our database
+const userPasswordMatches = (user, password) => {
+
+  if (bcrypt.compareSync(password, user.password)) {
+    return true;
+  };
+  
+};
 
 
 module.exports = { 
   getUserByEmail, 
-  generateRandomString 
+  generateRandomString,
+  userPasswordMatches
 };
