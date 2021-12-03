@@ -27,16 +27,18 @@ const urlDatabase = {
 
 //  Helper Functions
 
-const { getUserByEmail, generateRandomString, userPasswordMatches } = require("./helper");
+const { 
+  getUserByEmail, 
+  generateRandomString, 
+  userPasswordMatches
+} = require("./helper");
 
 const userDatabase = {
   "abc": {
     id: "abc",
     email: "test@email.com",
     password: bcrypt.hashSync("123",10)
-  }
-};
-
+  }};
 
 
 // Helper function that gets a specific user from a database
@@ -45,7 +47,7 @@ getUser = (object, cookie) => {
 };
 
 // Helper function retrieves user's specific urls from database
-const urlsForUser = userID => {
+const urlsForUser = (userID, urlDatabase) => {
 
   const userUrl = {};
 
@@ -90,7 +92,7 @@ app.get("/urls", (req, res) => {
   if (req.session.user_id) {
 
     const user = getUser(userDatabase, req.session.user_id);
-    const urlList = urlsForUser(req.session.user_id);
+    const urlList = urlsForUser(req.session.user_id, urlDatabase);
   
   
     const templateVars = {
@@ -248,7 +250,7 @@ app.get("/urls/:shortURL", (req, res) => {
   
     const templateVars = { 
       shortURL: shortURL, 
-      longURL: urlsForUser(cookie)[shortURL],
+      longURL: urlsForUser(cookie, urlDatabase)[shortURL],
       user: user
     };
   
