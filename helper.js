@@ -45,10 +45,16 @@ const urlsForUser = (userID, urlDatabase) => {
   return userUrl;
 };
 
+// Helper function that gets a specific user from a database
+const getUser = (object, cookie) => {
+  return object[cookie];
+};
+
 
 module.exports = { 
   getUserByEmail, 
   generateRandomString,
   userPasswordMatches,
-  urlsForUser
+  urlsForUser,
+  getUser
 };
