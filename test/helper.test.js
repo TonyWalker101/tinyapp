@@ -7,7 +7,8 @@ const {
   getUserByEmail, 
   generateRandomString,
   userPasswordMatches,
-  urlsForUser   
+  urlsForUser,
+  getUser 
 } = require('../helper.js');
 
 const testUsers = {
@@ -126,6 +127,7 @@ describe('#userPasswordMatches', function() {
   });
 
 });
+
 describe('#urlsForUser', function() {
 
   const urlDatabase = {
@@ -149,6 +151,36 @@ describe('#urlsForUser', function() {
     const expectedOutput = {};
     
     assert.deepEqual(actualOutput, expectedOutput);
+  });
+
+});
+
+describe('#getUser', function() {
+
+  // const urlDatabase = {
+  //   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "abc"},
+  //   "wdgfsd": {longURL: "http://www.google.com", userID: "123"},
+  //   "rgasdv": {longURL: "http://www.google.com", userID: "123"}
+  // };
+
+  it('Should return a specific user object from a DB using a user id', function() {
+
+    const actualOutput = getUser(testUsers, "userRandomID");
+    const expectedOutput = {
+      id: "userRandomID", 
+      email: "user@example.com", 
+      password: "purple-monkey-dinosaur"
+    };
+    
+    assert.deepEqual(actualOutput, expectedOutput);
+  });
+
+  it('Should return undefined if user id does not exist in DB', function() {
+
+    const actualOutput = getUser(testUsers, "abc");
+    const expectedOutput = undefined;
+    
+    assert.equal(actualOutput, expectedOutput);
   });
 
 });
