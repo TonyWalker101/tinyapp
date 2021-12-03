@@ -1,5 +1,10 @@
 // Helper functions
 
+// Function generates a random string for use with user IDs
+const generateRandomString = () => {
+  return Math.random().toString(20).substring(2,8);
+};
+
 // Function checks if user exists already in userDatabase
 const getUserByEmail = (email, userDatabase) => {
 
@@ -12,4 +17,9 @@ const getUserByEmail = (email, userDatabase) => {
   }
 };
 
-module.exports = { getUserByEmail };
+
+
+module.exports = { 
+  getUserByEmail, 
+  generateRandomString 
+};
