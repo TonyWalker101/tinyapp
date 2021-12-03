@@ -1,6 +1,7 @@
 // Requiring and calling Express package
 const express = require("express");
 const app = express();
+const bcrypt = require("bcrypt");
 
 // Requiring and calling Body Parser Package
 const bodyParser = require("body-parser");
@@ -165,7 +166,7 @@ app.get("/login", (req, res) => {
 // Registering New User
 app.post("/register", (req, res) => {
   const email = req.body.email;
-  const password = req.body.password;
+  // const password = req.body.password;
 
   randomID = generateRandomString();
   const newUser1 = {};
@@ -176,7 +177,7 @@ app.post("/register", (req, res) => {
 
   newUser1["id"] = randomID
   newUser1["email"] = req.body["email"];
-  newUser1["password"] = req.body["password"];
+  newUser1["password"] = bcrypt.hashSync(req.body["password"], 10);
   res.cookie("user_id", newUser1["id"]);
 
   userDatabase[randomID] = newUser1;
