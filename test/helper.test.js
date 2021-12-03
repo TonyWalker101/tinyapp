@@ -6,7 +6,8 @@ const bcrypt = require("bcrypt");
 const { 
   getUserByEmail, 
   generateRandomString,
-  userPasswordMatches   
+  userPasswordMatches,
+  urlsForUser   
 } = require('../helper.js');
 
 const testUsers = {
@@ -122,6 +123,32 @@ describe('#userPasswordMatches', function() {
     const expectedOutput = undefined;
     
     assert.equal(actualOutput, expectedOutput);
+  });
+
+});
+describe('#urlsForUser', function() {
+
+  const urlDatabase = {
+    "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "abc"},
+    "wdgfsd": {longURL: "http://www.google.com", userID: "123"},
+    "rgasdv": {longURL: "http://www.google.com", userID: "123"}
+  };
+  
+  
+  it('Should return a {shortUrls: longUrls} object specific to that user from DB', function() {
+
+    const actualOutput = urlsForUser("abc", urlDatabase);
+    const expectedOutput = { "b2xVn2": "http://www.lighthouselabs.ca"};
+    
+    assert.deepEqual(actualOutput, expectedOutput);
+  });
+
+  it('Should return an empty object if user has nothing in DB', function() {
+
+    const actualOutput = urlsForUser("xyz", urlDatabase);
+    const expectedOutput = {};
+    
+    assert.deepEqual(actualOutput, expectedOutput);
   });
 
 });
