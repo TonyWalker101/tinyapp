@@ -1,20 +1,21 @@
-// Requiring and calling Express package
+// Express Package
 const express = require("express");
 const app = express();
+const PORT = 8080;
+
+//Bcrypt Package
 const bcrypt = require("bcrypt");
 
-// Requiring and calling Body Parser Package
+// Body Parser Package
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-//Requiring Cookie Parser
+// Cookie Session Package
 const cookieSession = require("cookie-session");
 app.use(cookieSession({
   name: "session",
   keys: ["key1", "key2"]
 }));
-
-const PORT = 8080;
 
 // Setting template engine to EJS
 app.set("view engine", "ejs");
@@ -23,6 +24,10 @@ const urlDatabase = {
   "b2xVn2": {longURL: "http://www.lighthouselabs.ca", userID: "abc"},
   "9sm5xK": {longURL: "http://www.google.com", userID: "abc"}
 };
+
+//  Helper Functions
+
+const { getUserByEmail } = require("./helper");
 
 // Helper function generates a random string for user IDs
 const generateRandomString = () => {
@@ -35,20 +40,6 @@ const userDatabase = {
     email: "test@email.com",
     password: bcrypt.hashSync("123",10)
   }
-};
-
-// Helper function checks if user exists already in userDatabase
-const getUserByEmail = (email, userDatabase) => {
-
-  for (let obj in userDatabase) {
-    let user = userDatabase[obj];
-
-    if (user.email === email) {
-      return user;
-    }
-  }
-
-  return false;
 };
 
 // Helper function checks if a user's password matches our database
