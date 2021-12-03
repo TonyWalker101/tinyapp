@@ -36,6 +36,7 @@ const userDatabase = {
 
 // Helper function checks if user exists already in userDatabase
 const userExistsInDatabase = email => {
+
   for (let obj in userDatabase) {
     let user = userDatabase[obj];
 
@@ -50,7 +51,7 @@ const userExistsInDatabase = email => {
 // Helper function checks if a user's password matches our database
 const userPasswordMatches = (user, password) => {
 
-  if (user.password === password) {
+  if (bcrypt.compareSync(password, user.password)) {
     return true;
   };
   
@@ -166,7 +167,6 @@ app.get("/login", (req, res) => {
 // Registering New User
 app.post("/register", (req, res) => {
   const email = req.body.email;
-  // const password = req.body.password;
 
   randomID = generateRandomString();
   const newUser1 = {};
