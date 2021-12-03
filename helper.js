@@ -10,8 +10,6 @@ const getUserByEmail = (email, userDatabase) => {
       return user;
     }
   }
-
-  return false;
 };
 
 module.exports = { getUserByEmail };
