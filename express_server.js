@@ -17,10 +17,6 @@ app.use(cookieSession({
 
 app.set("view engine", "ejs");
 
-app.listen(PORT, ()=> {
-  console.log(`App listening on Port: ${PORT}`);
-});
-
 // =========== Helper Functions ===================================
 
 const {
@@ -263,4 +259,10 @@ app.post("/urls/:shortURL/update", (req, res) => {
   }
   
   return res.redirect("/usernotfound");
+});
+
+// =========== App Listening ======================================
+
+app.listen(PORT, ()=> {
+  console.log(`App listening on Port: ${PORT}`);
 });
