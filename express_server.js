@@ -217,6 +217,10 @@ app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  if (!email || !password) {
+    return res.status(400).send("Email and Password required to login!");
+  }
+
   if (getUserByEmail(email, userDatabase)) {
 
     const user = getUserByEmail(email, userDatabase);
@@ -227,7 +231,7 @@ app.post("/login", (req, res) => {
     }
   }
 
-  return res.status(403).send("Email and password combination does not match our records!");
+  return res.status(403).send("Email and Password combination does not match our records!");
 });
 
 // Logging Out 
