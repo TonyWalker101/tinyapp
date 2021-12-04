@@ -160,9 +160,14 @@ app.get("/u/:shortURL", (req, res) => {
 // Registering New User
 app.post("/register", (req, res) => {
   const email = req.body.email;
+  const password = req.body.password;
 
   randomID = generateRandomString();
   const newUser1 = {};
+
+  if (!email || !password) {
+    return res.status(400).send("Email and Password required to register!");
+  }
   
   if (getUserByEmail(email, userDatabase)) {
     return res.status(400).send("Email already registered!");
