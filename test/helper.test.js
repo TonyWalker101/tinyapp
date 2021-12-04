@@ -3,23 +3,23 @@
 const { assert } = require('chai');
 const bcrypt = require("bcrypt");
 
-const { 
-  getUserByEmail, 
+const {
+  getUserByEmail,
   generateRandomString,
   userPasswordMatches,
   urlsForUser,
-  getUser 
+  getUser
 } = require('../helper.js');
 
 const testUsers = {
   "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
+    id: "userRandomID",
+    email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
   "user2RandomID": {
-    id: "user2RandomID", 
-    email: "user2@example.com", 
+    id: "user2RandomID",
+    email: "user2@example.com",
     password: "dishwasher-funk"
   }
 };
@@ -74,8 +74,8 @@ describe('#getUserByEmail', function() {
     
     const actualOutput = getUserByEmail("user@example.com", testUsers);
     const expectedOutput = {
-      id: "userRandomID", 
-      email: "user@example.com", 
+      id: "userRandomID",
+      email: "user@example.com",
       password: "purple-monkey-dinosaur"
     };
     
@@ -97,8 +97,8 @@ describe('#userPasswordMatches', function() {
   it('Should return true if the password matches our user DB', function() {
 
     const user = {
-      id: "userRandomID", 
-      email: "user@example.com", 
+      id: "userRandomID",
+      email: "user@example.com",
       password: bcrypt.hashSync("purple-monkey-dinosaur",10)
     };
 
@@ -113,8 +113,8 @@ describe('#userPasswordMatches', function() {
   it('Should return undefined if the password does not match our user DB', function() {
 
     const user = {
-      id: "userRandomID", 
-      email: "user@example.com", 
+      id: "userRandomID",
+      email: "user@example.com",
       password: bcrypt.hashSync("purple-monkey-dinosaur", 10)
     };
 
@@ -167,8 +167,8 @@ describe('#getUser', function() {
 
     const actualOutput = getUser(testUsers, "userRandomID");
     const expectedOutput = {
-      id: "userRandomID", 
-      email: "user@example.com", 
+      id: "userRandomID",
+      email: "user@example.com",
       password: "purple-monkey-dinosaur"
     };
     
