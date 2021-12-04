@@ -23,7 +23,7 @@ const userPasswordMatches = (user, password) => {
 
   if (bcrypt.compareSync(password, user.password)) {
     return true;
-  };
+  }
   
 };
 
@@ -37,7 +37,7 @@ const urlsForUser = (userID, urlDatabase) => {
     let urlList = urlDatabase[obj];
 
     if (urlList.userID === userID) {
-     userUrl[obj] = urlList.longURL;
+      userUrl[obj] = urlList.longURL;
     }
   
   }
@@ -51,8 +51,8 @@ const getUser = (object, cookie) => {
 };
 
 
-module.exports = { 
-  getUserByEmail, 
+module.exports = {
+  getUserByEmail,
   generateRandomString,
   userPasswordMatches,
   urlsForUser,
