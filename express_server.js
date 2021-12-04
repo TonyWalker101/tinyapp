@@ -187,8 +187,13 @@ app.post("/register", (req, res) => {
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   const cookie = req.session.user_id;
+  const longURL = req.body["longURL"];
 
-  urlDatabase[shortURL] = {longURL: req.body["longURL"], userID: cookie};
+  if (!longURL) {
+    return res.status(400).send("Please enter a URL");
+  }
+
+  urlDatabase[shortURL] = {longURL: longURL, userID: cookie};
 
   res.redirect(`/urls/${shortURL}`);
 });
