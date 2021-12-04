@@ -23,9 +23,9 @@ app.listen(PORT, ()=> {
 
 // =========== Helper Functions ===================================
 
-const { 
-  getUserByEmail, 
-  generateRandomString, 
+const {
+  getUserByEmail,
+  generateRandomString,
   userPasswordMatches,
   urlsForUser,
   getUser
@@ -84,7 +84,7 @@ app.get("/urls", (req, res) => {
       user: user,
     };
   
-    return res.render("urls_index", templateVars);    
+    return res.render("urls_index", templateVars);
   }
 
   return res.redirect("/usernotfound");
@@ -95,9 +95,9 @@ app.get("/urls/new", (req, res) => {
   
   const user = getUser(userDatabase, req.session.user_id);
       
-    const templateVars = {
-      user: user
-    };
+  const templateVars = {
+    user: user
+  };
   
   return res.render("urls_new", templateVars);
 });
@@ -128,14 +128,14 @@ app.get("/login", (req, res) => {
 // /urls/TinyURL page
 app.get("/urls/:shortURL", (req, res) => {
   const cookie = req.session.user_id;
-  const shortURL = req.params.shortURL
+  const shortURL = req.params.shortURL;
 
   if (cookie && urlDatabase[shortURL].userID === cookie) {
     
     const user = getUser(userDatabase, cookie);
   
-    const templateVars = { 
-      shortURL: shortURL, 
+    const templateVars = {
+      shortURL: shortURL,
       longURL: urlsForUser(cookie, urlDatabase)[shortURL],
       user: user
     };
@@ -162,7 +162,7 @@ app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  randomID = generateRandomString();
+  let randomID = generateRandomString();
   const newUser1 = {};
 
   if (!email || !password) {
@@ -173,7 +173,7 @@ app.post("/register", (req, res) => {
     return res.status(400).send("Email already registered!");
   }
 
-  newUser1["id"] = randomID
+  newUser1["id"] = randomID;
   newUser1["email"] = req.body["email"];
   newUser1["password"] = bcrypt.hashSync(req.body["password"], 10);
   req.session.user_id =  newUser1["id"];
@@ -183,7 +183,7 @@ app.post("/register", (req, res) => {
   res.redirect(`/urls`);
 });
 
-// Tiny URL Creating 
+// Tiny URL Creating
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString();
   const cookie = req.session.user_id;
@@ -205,7 +205,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   
   if (cookie && urlDatabase[shortURL].userID === cookie) {
     delete urlDatabase[shortURL];
-    return res.redirect("/urls"); 
+    return res.redirect("/urls");
   }
 
   return res.redirect("/usernotfound");
@@ -234,7 +234,7 @@ app.post("/login", (req, res) => {
   return res.status(403).send("Email and Password combination does not match our records!");
 });
 
-// Logging Out 
+// Logging Out
 app.post("/logout", (req, res) => {
 
   req.session = null;
@@ -247,14 +247,14 @@ app.post("/urls/:shortURL/update", (req, res) => {
   
   const cookie = req.session.user_id;
   const shortURL = req.params.shortURL;
-  const longURL = req.body["longURL"]
+  const longURL = req.body["longURL"];
 
   if (!longURL) {
     return res.status(400).send("Please enter a URL");
   }
 
   if (cookie && urlDatabase[shortURL].userID === cookie) {
-    delete urlDatabase[req.params.shortURL]
+    delete urlDatabase[req.params.shortURL];
   
     const shortURL = generateRandomString();
     urlDatabase[shortURL] = {longURL: longURL, userID: cookie};
