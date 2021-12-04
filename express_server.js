@@ -247,12 +247,17 @@ app.post("/urls/:shortURL/update", (req, res) => {
   
   const cookie = req.session.user_id;
   const shortURL = req.params.shortURL;
+  const longURL = req.body["longURL"]
+
+  if (!longURL) {
+    return res.status(400).send("Please enter a URL");
+  }
 
   if (cookie && urlDatabase[shortURL].userID === cookie) {
     delete urlDatabase[req.params.shortURL]
   
     const shortURL = generateRandomString();
-    urlDatabase[shortURL] = {longURL: req.body["longURL"], userID: cookie};
+    urlDatabase[shortURL] = {longURL: longURL, userID: cookie};
   
     return res.redirect(`/urls/${shortURL}`);
   }
